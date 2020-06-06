@@ -159,34 +159,45 @@ class Discord
 
 
     // NEWS
-    private function getNewsSection($section)
+    private function getNewsSection($section_id)
     {
+        $section_data = e107::getDb()->retrieve("news_category", "category_name, category_sef", "category_id='{$section_id}'");
+
+        if($this->e2b_debug)
+        {
+            error_log("news section data");
+            error_log(print_r($section_data, TRUE));
+        }
+
+        return $section_data; 
     }
 
     function prepareNews($event_name, $event_data, $event_rule_data)
     {
+        $action = '';
+
         if($this->e2b_debug)
         {
             error_log("event data");
             error_log(print_r($event_data, TRUE));
+
+            error_log("event rule data");
+            error_log(print_r($event_rule_data, TRUE));
         }
 
-        // Use $event_rule_data to check for section (match with $event_data category or categories, when 0 go ahead)
-
+        // Existing News item updated
         if($event_name == "admin_news_update")
         {
-            $content = LAN_E2B_NEWS_UPDATED; 
-            $news_data = array_merge($event_data["oldData"], $event_data["newData"]);
-            $news_data["news_id"] = $event_data["oldData"]["news_id"]; // make sure 'news_id' is included in the 'new' news data
+            $news_data              = array_merge($event_data["oldData"], $event_data["newData"]);
+            $news_data["news_id"]   = $event_data["oldData"]["news_id"]; // make sure 'news_id' is included in the 'new' news data
 
-            // $content = LAN_E2B_NEWS_UPDATED_CATEGORY; // TODO LAN [x]
+            $action = "update"; 
         }
+        // New news item created
         else
         {
-            $content = LAN_E2B_NEWS_NEW;   
-            //$content = "News item has been created in category [x]"; // TODO LAN [x]
-
             $news_data = $event_data["newData"];
+            $action = "create";
         }
 
         if($this->e2b_debug)
@@ -194,7 +205,47 @@ class Discord
             error_log("news data");
             error_log(print_r($news_data, TRUE));
         }
-        
+
+        // Check if specific news categories have been selected, if not, then it is a generic news update message. 
+        if($event_rule_data["er_sections"] !== "0")
+        {
+            // Specific sections are selected. 
+            // Create array of sections
+            $er_sections = explode(",", $event_rule_data["er_sections"]);
+
+            // Check if the updated news item belongs to one of the selected sections. 
+            if(in_array($news_data["news_category"], $er_sections))
+            {
+                $section_data = $this->getNewsSection($news_data["news_category"]);
+
+                // Set content
+                if($action == "update")
+                {
+                    $content = e107::getParser()->lanVars(LAN_E2B_NEWS_UPDATED_CATEGORY, $section_data["category_name"]);
+                }
+                else
+                {
+                    $content = e107::getParser()->lanVars(LAN_E2B_NEWS_NEW_CATEGORY, $section_data["category_name"]);
+                }
+            }
+            else
+            {
+                if($this->e2b_debug)
+                {
+                    error_log("News item does NOT belong to a selected section");
+                }   
+            
+                // News item does NOT belong to a selected section, so stop the process. No update message is going to be send.  
+                return false;   
+            }
+             
+        }
+        // No specific section is selected, so display generic message
+        else
+        {
+            $content = ($action == "update") ? LAN_E2B_NEWS_UPDATED : LAN_E2B_NEWS_NEW;   
+        }
+
         // Author
         $userdata       = e107::user($news_data["news_author"]);
         $news_author    = $userdata["user_name"];
@@ -209,8 +260,16 @@ class Discord
 
         $news_author_avatar = e107::getParser()->toAvatar(array('user_image' => $userdata['user_image']), $avatar_options); 
 
-        // News item url 
+        // News item titel url 
         $news_url = e107::getUrl()->create('news/view/item', $news_data, array('full' => 1, 'encode' => 0)); 
+
+        // Set description (news_body)
+        $news_body_notags  = str_replace(array('[html]','[/html]'),'', $news_data["news_body"]); // remove [html] and [/html]
+        $news_body_tohtml  = e107::getParser()->toHTML($news_body_notags, true); // parse bbcodes 
+
+        // Convert HTML to Markdown
+        $converter  = new League\HTMLToMarkdown\HtmlConverter();
+        $news_body  = $converter->convert($news_body_tohtml);
 
         // News (first) thumbnail url
         $news_image_raw = explode(",", $news_data["news_thumbnail"]);
@@ -224,7 +283,7 @@ class Discord
             "embeds" => [
                 [
                     "title"         => $news_data["news_title"],
-                    "description"   => $news_data["news_summary"],
+                    "description"   => $news_body,
                     
                     "type"          => "rich",
                     
