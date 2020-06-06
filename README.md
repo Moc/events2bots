@@ -1,18 +1,16 @@
 # Events2Bots #
-Description to be added
 
-WARNING: THIS PLUGIN IS CURRENTLY IN BETA TESTING STAGE! 
+**WARNING: THIS PLUGIN IS CURRENTLY IN BETA TESTING STAGE! DO NOT USE ON A LIVE WEBSITE YET!**
 
 ## Features
 
 
 ## Planned features in future versions:
 - Add custom messages in Discord, per eventrule 
-- Select specific forums and news categories 
-- Supported events: - user_forum_topic_updated, user_xup_signup
+- Support events: - user_forum_topic_updated, user_xup_signup
 
 
-## Supported events
+## Currently supported events
 News:
 - News item created (admin_news_create)
 - News item updated (admin_news_update)
