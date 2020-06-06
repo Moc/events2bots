@@ -1,0 +1,6 @@
+{
+    "require": {
+        "monolog/monolog": "1.0.*",
+        "league/html-to-markdown": "^4.9"
+    }
+}
