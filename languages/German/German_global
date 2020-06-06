@@ -1,0 +1,38 @@
+<?php
+
+// Always use the format LAN_PLUGIN_{FOLDER}_{TYPE} to prevent conflicts. In this case "_BLANK" is the folder. 
+// This should contain the LANs used in the plugin.xml file. 
+
+define("LAN_PLUGIN_E2B_NAME", "Events2Bots");
+define("LAN_PLUGIN_E2B_DIZ",  "Dieses Plugin erlaubt es Nachrichten and Bots (Discord und Telegram) zu senden, basierend auf Event innerhalb von e107 wie z. B. Postings von News oder Foreneinträgen."); 
+
+
+// EVENTS
+
+// User
+define("LAN_E2B_USER_SIGNUP_SUBMITTED", "Ein neuer Benutzer hat sich registriert."); 
+define("LAN_E2B_USER_SIGNUP_ACTIVATED", "Ein neuer Benutzeraccount wurde aktiviert."); 
+define("LAN_E2B_USER_SIGNUP_XUP",		"Ein neuer Benutzer hat sich via Social Media Plugin registriert."); 
+
+
+// News
+define("LAN_E2B_NEWS_NEW", 				"Es wurde ein neuer News Beitrag geposted."); 
+define("LAN_E2B_NEWS_NEW_CATEGORY", 	"Ein neuer News Beitrag wurde in die Kategorie [x] geposted."); 
+
+define("LAN_E2B_NEWS_UPDATED", 			"Ein News Beitrag wurde aktualisiert."); 
+define("LAN_E2B_NEWS_UPDATED_CATEGORY", "Ein News Beitrag in Kategorie [x] wurde aktualisiert."); 
+
+
+// Forum
+define("LAN_E2B_FORUM_TOPIC_CREATED", 			"Ein neuer Forum Eintrag wurde geposted."); 
+define("LAN_E2B_FORUM_TOPIC_CREATED_CATEGORY", 	"Ein neuer Forum Eintrag wurde in Kategorie [x] geposted."); 
+
+define("LAN_E2B_FORUM_TOPIC_UPDATED", 			"Ein Forum Eintrag wurde aktualisiert."); 
+define("LAN_E2B_FORUM_TOPIC_UPDATED_CATEGORY", 	"Ein Forum Eintrag in Kategorie [x] wurde aktualisiert."); 
+
+define("LAN_E2B_FORUM_POST_CREATED", 			"Ein gibt einen neuen Post im Forum."); 
+define("LAN_E2B_FORUM_POST_CREATED_CATEGORY", 	"Ein gibt einen neuen Post im Forum in Kategorie [x]."); 
+
+
+// Chatbox
+define("LAN_E2B_CHATBOX_NEW_POST", 		"Eine neue Chatbox Nachricht wurde gepostet.");  
