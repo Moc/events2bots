@@ -19,14 +19,21 @@ class events2bots_adminArea extends e_admin_dispatcher
             'path' 			=> null,
             'ui' 			=> 'e2b_bots_form_ui',
             'uipath' 		=> null
-        ) ,
+        ),
 
-        'cat' => array(
-            'controller' 	=> 'e2b_eventrules_ui',
+        'user' => array(
+            'controller'    => 'e2b_user_eventrules_ui',
+            'path'          => null,
+            'ui'            => 'e2b_user_eventrules_form_ui',
+            'uipath'        => null
+        ),
+
+        'news' => array(
+            'controller' 	=> 'e2b_news_eventrules_ui',
             'path'			=> null,
-            'ui' 			=> 'e2b_eventrules_form_ui',
+            'ui' 			=> 'e2b_news_eventrules_form_ui',
             'uipath' 		=> null
-        ) ,
+        ),
 
     );
 
@@ -35,33 +42,46 @@ class events2bots_adminArea extends e_admin_dispatcher
         'main/list' => array(
             'caption' 	=> "Manage Bots",
             'perm' 		=> 'P'
-        ) ,
+        ),
         'main/create' => array(
 			'caption'	=> "Create a bot",
 			'perm'		=> 'P'
-        ) ,
+        ),
 
         'main/div0' => array(
             'divider' => true
-        ) ,
+        ),
 
-        'cat/list' => array(
-            'caption' 	=> "Manage event rules",
+        'user/list' => array(
+            'caption' 	=> "Manage User event rules",
             'perm' 		=> 'P'
-        ) ,
-        'cat/create' => array(
-            'caption' 	=> "Manage event rules",
+        ),
+        'user/create' => array(
+            'caption' 	=> "Create User event rules",
             'perm' 		=> 'P'
-        ) ,
+        ),
 
         'main/div1' => array(
             'divider' => true
-        ) ,
+        ),
+
+        'news/list' => array(
+            'caption'   => "Manage News event rules",
+            'perm'      => 'P'
+        ),
+        'news/create' => array(
+            'caption'   => "Create News event rules",
+            'perm'      => 'P'
+        ),
+
+        'main/div2' => array(
+            'divider' => true
+        ),
 
         'main/prefs' => array(
             'caption' 	=> LAN_PREFS,
             'perm' 		=> 'P'
-        ) ,
+        ),
 
         // 'main/div0'      => array('divider'=> true),
         // 'main/custom'		=> array('caption'=> 'Custom Page', 'perm' => 'P'),
@@ -329,7 +349,7 @@ class e2b_bots_form_ui extends e_admin_form_ui
 
 }
 
-class e2b_eventrules_ui extends e_admin_ui
+class e2b_user_eventrules_ui extends e_admin_ui
 {
 
     protected $pluginTitle 	= 'Events2Bots';
@@ -340,13 +360,302 @@ class e2b_eventrules_ui extends e_admin_ui
     protected $perPage 		= 10;
     protected $batchDelete 	= true;
     protected $batchExport 	= true;
-    protected $batchCopy 	= true;
+    protected $batchCopy 	= false;
 
     //	protected $sortField		= 'somefield_order';
     //	protected $sortParent      = 'somefield_parent';
     //	protected $treePrefix      = 'somefield_title';
     //	protected $tabs				= array('Tabl 1','Tab 2'); // Use 'tab'=>0  OR 'tab'=>1 in the $fields below to enable.
-    //	protected $listQry      	= "SELECT * FROM `#tableName` WHERE field != '' "; // Example Custom Query. LEFT JOINS allowed. Should be without any Order or Limit.
+
+    protected $listQry      	= 
+    "
+        SELECT er.*, b.bot_avatar
+        FROM `#e2b_eventrules` as er
+        LEFT JOIN `#e2b_bots` as b
+        ON er.er_botid = b.bot_id
+        WHERE (er.er_eventname = 'user_signup_submitted' OR er.er_eventname = 'user_signup_activated')
+    "; 
+
+    protected $listOrder = 'er_id ASC';
+
+    protected $fields = array(
+        'checkboxes' => array(
+            'title' => '',
+            'type' => null,
+            'data' => null,
+            'width' => '5%',
+            'thclass' => 'center',
+            'forced' => true,
+            'class' => 'center',
+            'toggle' => 'e-multiselect',
+            'readParms' => array(),
+            'writeParms' => array(),
+        ) ,
+        'er_id' => array(
+            'title' => "ER ID",
+            'type' => 'number',
+            'data' => 'int',
+            'width' => '5%',
+            'help' => '',
+            'readParms' => array(),
+            'writeParms' => array(),
+            'class' => 'left',
+            'thclass' => 'left',
+            //'forced' => '1',
+        ),
+        'bot_avatar' => array(
+            'title' => 'Bot Avatar',
+            'type'  => 'image',
+            'data' => 'str',
+            'width' => 'auto',
+            'help' => '',
+            'readParms' => 'thumb=60&thumb_urlraw=0&thumb_aw=60',
+            'writeParms' => array(),
+            'class' => 'left',
+            'thclass' => 'left',
+            'forced' => '1',
+            'noedit' => true, 
+        ),
+        'er_botid' => array(
+            'title' => "Bot",
+            'type' => 'dropdown',
+            'data' => 'str',
+            'width' => 'auto',
+            'help' => '',
+            'readParms' => array(),
+            'writeParms' => array(),
+            'class' => 'left',
+            'thclass' => 'left',
+            'validate' => true,
+        ),
+        'er_name' => array(
+            'title' => LAN_TITLE,
+            'type' => 'text',
+            'data' => 'str',
+            'width' => 'auto',
+            'inline' => true,
+            'help' => '',
+            'readParms' => array(),
+            'writeParms' => array(),
+            'class' => 'left',
+            'thclass' => 'left',
+            'validate' => true,
+        ),
+        'er_eventname' => array(
+            'title' => 'Event name',
+            'type' => 'radio',
+            'data' => 'str',
+            'width' => 'auto',
+            'help' => '',
+            'readParms' => array(),
+            'writeParms' => array(),
+            'class' => 'left',
+            'thclass' => 'left',
+            'filter' => true,
+            'batch' => false,
+            'validate' => true,
+        ) ,
+        'er_sections' => array(
+            'title' => 'Sections',
+            'type' => 'hidden',
+            'data' => 'str',
+            'width' => 'auto',
+            'help' => '',
+            'readParms' => array(),
+            'writeParms' => array(),
+            'class' => 'left',
+            'thclass' => 'left',
+            'filter' => false,
+            'batch' => false,
+        ) ,
+        'options' => array(
+            'title' => LAN_OPTIONS,
+            'type' => null,
+            'data' => null,
+            'width' => '10%',
+            'thclass' => 'center last',
+            'class' => 'center last',
+            'forced' => true,
+            'readParms' => array(),
+            'writeParms' => array(),
+        ) ,
+    );
+
+    protected $fieldpref = array(
+        'er_id',
+        'bot_avatar',
+        'er_botid',
+        'er_name', 
+        'er_selectedevents'
+    );
+
+    public function init()
+    {
+        // This code may be removed once plugin development is complete.
+        if (!e107::isInstalled('events2bots'))
+        {
+            e107::getMessage()->addWarning("This plugin is not yet installed. Saving and loading of preference or table data will fail.");
+        }
+
+        // Bots
+        $this->er_botid[0] = "Select bot...";
+        if(e107::getDb()->select('e2b_bots'))
+        {
+            while ($row = e107::getDb()->fetch())
+            {
+                $this->er_botid[$row['bot_id']] = $row['bot_name'];
+            }
+        }
+
+        $this->fields['er_botid']['writeParms'] = $this->er_botid; 
+
+        
+        
+        // Events
+        $user_events = array(
+            "user_signup_submitted" => "New user registration",
+            "user_signup_activated" => "New user has activated their account",
+        );
+        
+        //print_a($user_events);
+
+        //$this->er_eventname[0] = "Select event...";
+
+        foreach($user_events as $id => $value)
+        {
+            $this->er_eventname[$id] = $value; 
+        }
+
+        $this->fields['er_eventname']['writeParms'] = $this->er_eventname; 
+
+        
+    }
+
+    // ------- Customize Create --------
+    public function beforeCreate($new_data, $old_data)
+    {
+        return $new_data;
+    }
+
+    public function afterCreate($new_data, $old_data, $id)
+    {
+        // do something
+        
+    }
+
+    public function onCreateError($new_data, $old_data)
+    {
+        // do something
+        
+    }
+
+    // ------- Customize Update --------
+    public function beforeUpdate($new_data, $old_data, $id)
+    {
+        return $new_data;
+    }
+
+    public function afterUpdate($new_data, $old_data, $id)
+    {
+        // do something
+        
+    }
+
+    public function onUpdateError($new_data, $old_data, $id)
+    {
+        // do something
+        
+    }
+
+    // left-panel help menu area. (replaces e_help.php used in old plugins)
+    public function renderHelp()
+    {
+        $caption = LAN_HELP;
+        $text = 'Some help text';
+
+        return array(
+            'caption' 	=> $caption,
+            'text' 		=> $text
+        );
+
+    }
+
+}
+
+class e2b_user_eventrules_form_ui extends e_admin_form_ui
+{
+
+    // Custom Method/Function
+    function er_eventname($curVal, $mode)
+    {
+        $user_events = array(
+            "user_signup_submitted" => "New user registration",
+            "user_signup_activated" => "New user has activated their account",
+        );
+
+        switch ($mode)
+        {
+            case 'read': // List Page
+                return $user_events[$curVal]. " (".$curVal.")";
+            break;
+            case 'write': // Edit Page
+                return $this->text('er_selectedevents', $curVal, 255, 'size=large');
+            break;
+            case 'filter':
+            break;
+            case 'batch':
+            break;
+        }
+
+        return null;
+    }
+
+    // Custom Method/Function
+    function er_botid($curVal, $mode)
+    {
+        $user_events = array(
+            "user_signup_submitted" => "New user registration",
+            "user_signup_activated" => "New user has activated their account",
+        );
+
+        switch ($mode)
+        {
+            case 'read': // List Page
+                return $curVal;
+            break;
+            case 'write': // Edit Page
+                //return $this->text('er_selectedevents', $curVal, 255, 'size=large');
+                return "dropdown here";
+            break;
+            case 'filter':
+            break;
+            case 'batch':
+            break;
+        }
+
+        return null;
+    }
+
+}
+
+class e2b_news_eventrules_ui extends e_admin_ui
+{
+
+    protected $pluginTitle  = 'Events2Bots';
+    protected $pluginName   = 'events2bots';
+    //  protected $eventName        = 'events2bots-e2b_eventrules'; // remove comment to enable event triggers in admin.
+    protected $table        = 'e2b_eventrules';
+    protected $pid          = 'er_id';
+    protected $perPage      = 10;
+    protected $batchDelete  = true;
+    protected $batchExport  = true;
+    protected $batchCopy    = true;
+
+    //  protected $sortField        = 'somefield_order';
+    //  protected $sortParent      = 'somefield_parent';
+    //  protected $treePrefix      = 'somefield_title';
+    //  protected $tabs             = array('Tabl 1','Tab 2'); // Use 'tab'=>0  OR 'tab'=>1 in the $fields below to enable.
+    //  protected $listQry          = "SELECT * FROM `#tableName` WHERE field != '' "; // Example Custom Query. LEFT JOINS allowed. Should be without any Order or Limit.
     protected $listOrder = 'er_id DESC';
 
     protected $fields = array(
@@ -487,8 +796,8 @@ class e2b_eventrules_ui extends e_admin_ui
         $text = 'Some help text';
 
         return array(
-            'caption' 	=> $caption,
-            'text' 		=> $text
+            'caption'   => $caption,
+            'text'      => $text
         );
 
     }
@@ -564,12 +873,14 @@ class e2b_eventrules_ui extends e_admin_ui
 
 }
 
-class e2b_eventrules_form_ui extends e_admin_form_ui
+class e2b_news_eventrules_form_ui extends e_admin_form_ui
 {
 
     // Custom Method/Function
     function er_selectedevents($curVal, $mode)
     {
+
+
 
         switch ($mode)
         {
