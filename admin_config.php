@@ -247,17 +247,12 @@ class e2b_bots_ui extends e_admin_ui
             //2 => "Telegram",
         );
 
-
         // Supported languages (based on files in the languages folder)
-       	//$supported_languages = glob(e_PLUGIN."events2bots/languages/*" , GLOB_ONLYDIR);
        	$landirs	= scandir(e_PLUGIN."events2bots/languages/");
        	$landirs  	= array_diff($landirs, array('.', '..'));
        	//print_a($landirs);
 
-       $this->fields['bot_language']['writeParms']['optArray'] = $landirs;
-
-        
-
+        $this->fields['bot_language']['writeParms']['optArray'] = $landirs;
     }
 
     // ------- Customize Create --------
@@ -427,6 +422,7 @@ class e2b_user_eventrules_ui extends e_admin_ui
             'class' => 'left',
             'thclass' => 'left',
             'validate' => true,
+            'filter' => true,
         ),
         'er_name' => array(
             'title' => LAN_TITLE,
@@ -448,7 +444,7 @@ class e2b_user_eventrules_ui extends e_admin_ui
             'width' => 'auto',
             'help' => '',
             'readParms' => array(),
-            'writeParms' => array(),
+            'writeParms' => array("sep" => "<br />"),
             'class' => 'left',
             'thclass' => 'left',
             'filter' => true,
@@ -526,7 +522,7 @@ class e2b_user_eventrules_ui extends e_admin_ui
             $this->er_eventname[$id] = $value; 
         }
 
-        $this->fields['er_eventname']['writeParms'] = $this->er_eventname; 
+        $this->fields['er_eventname']['writeParms']['optArray'] = $this->er_eventname; 
 
         
     }
