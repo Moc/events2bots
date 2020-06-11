@@ -14,7 +14,7 @@ CREATE TABLE e2b_bots (
   `bot_name` varchar(50) NOT NULL,
   `bot_provider` int(10) NOT NULL,
   `bot_language` varchar(50) NOT NULL,
-  `bot_apidata` varchar(255) NOT NULL
+  `bot_apidata` varchar(255) NOT NULL,
   PRIMARY KEY (`bot_id`)
 ) ENGINE=MyISAM;
 
