@@ -33,6 +33,7 @@ class Discord
 
     function init($event_type, $event_name, $event_rule_data, $event_data)
     {
+        // Define Bot ID
         $bot_id = $event_rule_data['er_botid'];
 
         if($this->e2b_debug)
@@ -53,7 +54,7 @@ class Discord
             $this->bot_name = $bot_data['bot_name'];
 
             // Set bot language
-            //$this->bot_language = $bot_data['bot_language']; // TODO
+            //$this->bot_language = $bot_data['bot_language']; // TODO ALLOW LANGUAGES OTHER THAN ENGLISH
 
             // Set bot_avatar
             if(!empty($bot_data["bot_avatar"]))

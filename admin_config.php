@@ -7,7 +7,7 @@ if (!getperms('P'))
     exit;
 }
 
-// e107::lan('events2bots',true);
+e107::lan('events2bots', true, true);
 
 class events2bots_adminArea extends e_admin_dispatcher
 {
@@ -214,31 +214,31 @@ class e2b_bots_ui extends e_admin_ui
     );
 
     
-    protected $preftabs = array('Bot defaults', 'Advanced');
+    //protected $preftabs = array('Bot defaults', 'Advanced');
     
     protected $prefs = array(
         'e2b_default_avatar' => array(
-            'title'         => 'Default bot avatar',
+            'title'         => LAN_E2B_PREFS_DEFAULTAVATAR,
             'tab'           => 0,
             'type'          => 'image',
             'data'          => 'str',
-            'help'          => 'Default avatar of a bot (if not selected)',
+            'help'          => LAN_E2B_PREFS_DEFAULTAVATAR_HELP,
             'writeParms'    => array()
         ),
         'e2b_default_language' => array(
-            'title'         => 'Default bot language',
+            'title'         => LAN_E2B_PREFS_DEFAULTLAN,
             'tab'           => 0,
             'type'          => 'dropdown',
             'data'          => 'str',
-            'help'          => 'Default language of a bot (if not selected)',
+            'help'          => LAN_E2B_PREFS_DEFAULTLAN_HELP,
             'writeParms'    => array()
         ),
         'e2b_debug' => array(
-            'title'         => 'Debug mode',
-            'tab'           => 1,
+            'title'         => LAN_E2B_PREFS_DEBUGMODE,
+            'tab'           => 0,
             'type'          => 'boolean',
             'data'          => 'int',
-            'help'          => 'Enable debug mode when debugging or developing',
+            'help'          => LAN_E2B_PREFS_DEBUGMODE_HELP,
             'writeParms'    => array()
         ),
     );
