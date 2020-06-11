@@ -14,7 +14,7 @@ class events2bots
 {
 	public $supported_events = array();
 
-	public $e2b_debug = true; // TODO: add preference and set to 'false' by default
+	public $e2b_debug = false; 
 
 	public function __construct() 
 	{
@@ -38,12 +38,11 @@ class events2bots
 			),
 		);
 
-		// TODO
-		// if pref set debug to true; 
-		// if($pref)
-		// {
-		// 	$this->e2b_debug = true; // TODO
-		// }
+		// Check debug mode
+		if(e107::getPlugPref('events2bots', 'e2b_debug') == true) 
+		{
+			$this->e2b_debug = true;
+		}
 	}
 	
 

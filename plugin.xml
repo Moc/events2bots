@@ -17,5 +17,6 @@
 	<pluginPrefs>
 		<pref name="e2b_default_avatar">1</pref>
 		<pref name="e2b_default_language">English</pref>
+		<pref name="e2b_debug">0</pref>
 	</pluginPrefs>
 </e107Plugin>

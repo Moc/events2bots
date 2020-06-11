@@ -213,23 +213,33 @@ class e2b_bots_ui extends e_admin_ui
         'bot_language'
     );
 
-    //	protected $preftabs        = array('General', 'Other' );
+    
+    protected $preftabs = array('Bot defaults', 'Advanced');
+    
     protected $prefs = array(
         'e2b_default_avatar' => array(
-            'title' => 'E2b_default_avatar',
-            'tab' => 0,
-            'type' => 'image',
-            'data' => 'str',
-            'help' => 'Default avatar of a bot (if not selected)',
-            'writeParms' => array()
+            'title'         => 'Default bot avatar',
+            'tab'           => 0,
+            'type'          => 'image',
+            'data'          => 'str',
+            'help'          => 'Default avatar of a bot (if not selected)',
+            'writeParms'    => array()
         ),
         'e2b_default_language' => array(
-            'title' => 'E2b_default_language',
-            'tab' => 0,
-            'type' => 'language',
-            'data' => 'str',
-            'help' => 'Default language of a bot (if not selected)',
-            'writeParms' => array()
+            'title'         => 'Default bot language',
+            'tab'           => 0,
+            'type'          => 'dropdown',
+            'data'          => 'str',
+            'help'          => 'Default language of a bot (if not selected)',
+            'writeParms'    => array()
+        ),
+        'e2b_debug' => array(
+            'title'         => 'Debug mode',
+            'tab'           => 1,
+            'type'          => 'boolean',
+            'data'          => 'int',
+            'help'          => 'Enable debug mode when debugging or developing',
+            'writeParms'    => array()
         ),
     );
 
@@ -239,6 +249,12 @@ class e2b_bots_ui extends e_admin_ui
         if (!e107::isInstalled('events2bots'))
         {
             e107::getMessage()->addWarning("This plugin is not yet installed. Saving and loading of preference or table data will fail.");
+        }
+
+        // Check debug mode
+        if(e107::getPlugPref('events2bots', 'e2b_debug'))
+        {
+            e107::getMessage()->addWarning("Events2Bots debug mode is <strong>enabled</strong>!");
         }
 
         // Supported providers
