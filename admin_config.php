@@ -267,7 +267,7 @@ class e2b_bots_ui extends e_admin_ui
         'e2b_default_language' => array(
             'title'         => LAN_E2B_PREFS_DEFAULTLAN,
             'tab'           => 0,
-            'type'          => 'dropdown',
+            'type'          => 'lanlist',
             'data'          => 'str',
             'help'          => LAN_E2B_PREFS_DEFAULTLAN_HELP,
             'writeParms'    => array()
