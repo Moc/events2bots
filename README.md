@@ -3,12 +3,12 @@
 **WARNING: THIS PLUGIN IS CURRENTLY IN BETA TESTING STAGE! DO NOT USE ON A LIVE WEBSITE YET!**
 
 ## Features
-
+- todo
 
 ## Planned features in future versions:
 - Add custom messages in Discord, per eventrule 
 - Support events: - user_forum_topic_updated, user_xup_signup
-- Support events: admin_page_create, admin_page_update, admin_page_delete
+- Support events: Pages/menus (admin_page_create, admin_page_update, admin_page_delete)
 
 
 ## Currently supported events
