@@ -82,15 +82,19 @@ class events2bots
 		{
 			foreach($allRows as $row)
 			{
-				// Check if bot ID is set and not "0"
-				if($row['er_botid'] == '0');
+				//Check if bot ID is set and not "0" - TODO CHECK WHY THIS IS NOT WORKING 
+				/*
+				$row['er_botid'] = (int) $row['er_botid'];
+
+				if($row['er_botid'] == 0);
 				{	
 					if($this->e2b_debug)
 					{ 
-						error_log("Bot ID is 0, abort init");
+						error_log("Bot ID is 0 (".$row['er_botid']."), abort init");
+						//error_log(var_dump($row['er_botid']));
 					}
 					return false;
-				}
+				}*/
 
 				// Determine provider
 				$provider = $this->isProvider($row['er_botid']); 
