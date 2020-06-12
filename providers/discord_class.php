@@ -320,7 +320,7 @@ class Discord
         switch($type)
         {
             case 'post':
-                $qry = 'SELECT f.forum_name, f.forum_sef, t.thread_id, t.thread_name, p.post_entry 
+                $qry = 'SELECT f.forum_id, f.forum_name, f.forum_sef, t.thread_id, t.thread_name, p.post_entry 
                         FROM `#forum_post` AS p
                         LEFT JOIN `#forum_thread` AS t ON (t.thread_id = p.post_thread)
                         LEFT JOIN `#forum` AS f ON (f.forum_id = t.thread_forum_id) 
@@ -328,7 +328,7 @@ class Discord
                 break;
 
             case 'thread':
-                $qry = 'SELECT f.forum_name, f.forum_sef, t.thread_id, t.thread_name
+                $qry = 'SELECT f.forum_id, f.forum_name, f.forum_sef, t.thread_id, t.thread_name
                         FROM `#forum_thread` AS t
                         LEFT JOIN `#forum` AS f ON (f.forum_id = t.thread_forum_id) 
                         WHERE t.thread_id = ' . intval($id);
@@ -383,7 +383,8 @@ class Discord
 
     private function getForumSection($section)
     {
-
+        $section_data = e107::getDb()->retrieve("forum", "*", "forum_id='{$section}'");
+        return $section_data;
     }
 
     function prepareForum($event_name, $event_data, $event_rule_data)
@@ -407,6 +408,8 @@ class Discord
             return; 
         }   
 
+
+
         // user_forum_post_created        
         if($event_name == "user_forum_post_created")
         {
@@ -421,9 +424,6 @@ class Discord
                 [post_id] => 30
             )
             */
-
-            // Forum post is a not a new topic (see check above). So continue with new post information. 
-            $content = LAN_E2B_FORUM_POST_CREATED;
 
             // Put event data in forum_data, so we have everything in one place 
             $forum_data = array_merge($forum_data, $event_data);
@@ -474,10 +474,48 @@ class Discord
             // Get post data and merge with $forum_data
             $thread_data = $this->getForumData('post', $event_data["post_id"]);
             $forum_data = array_merge($thread_data, $forum_data);
+        }
 
-            // Set title
-            $content = LAN_E2B_FORUM_TOPIC_CREATED;
-            // $content = LAN_E2B_FORUM_TOPIC_CREATED_CATEGORY; // TODO CATEGORY [X] 
+
+        // Check if specific news categories have been selected, if not, then it is a generic news update message. 
+        if($event_rule_data["er_sections"] !== "0")
+        {
+            // Specific sections are selected. 
+            // Create array of sections
+            $er_sections    = explode(",", $event_rule_data["er_sections"]);
+
+            $forum_id       = (isset($forum_data["forum_id"])) ? $forum_data["forum_id"] : $forum_data["thread_forum_id"];
+            $section_data   = $this->getForumSection($forum_id);
+
+            // Check if the updated news item belongs to one of the selected sections. 
+            if(in_array($forum_data["forum_id"], $er_sections))
+            {
+                // Set content
+                if($event_name == "user_forum_post_created")
+                {
+                    $content = e107::getParser()->lanVars(LAN_E2B_FORUM_POST_CREATED_CATEGORY, $section_data["forum_name"]);
+                }
+                else
+                {
+                    $content = e107::getParser()->lanVars(LAN_E2B_FORUM_TOPIC_CREATED_CATEGORY, $section_data["forum_name"]);
+                }
+            }
+            else
+            {
+                if($this->e2b_debug)
+                {
+                    error_log("Forum topic/post does NOT belong to a selected section");
+                }   
+            
+                // Forum topic/post does NOT belong to a selected section, so stop the process. No update message is going to be send.  
+                return false;   
+            }
+             
+        }
+        // No specific section is selected, so display generic message
+        else
+        {
+            $content = ($event_name == "user_forum_post_created") ? LAN_E2B_FORUM_POST_CREATED : LAN_E2B_FORUM_TOPIC_CREATED;   
         }
 
         if($this->e2b_debug)
