@@ -398,15 +398,6 @@ class e2b_eventrules_ui extends e_admin_ui
     //	protected $treePrefix      = 'somefield_title';
     //	protected $tabs				= array('Tabl 1','Tab 2'); // Use 'tab'=>0  OR 'tab'=>1 in the $fields below to enable.
 
-    /*protected $listQry      	= 
-    "
-        SELECT er.*, b.bot_avatar
-        FROM `#e2b_eventrules` as er
-        LEFT JOIN `#e2b_bots` as b
-        ON er.er_botid = b.bot_id
-        WHERE (er.er_eventname = 'user_signup_submitted' OR er.er_eventname = 'user_signup_activated')
-    ";*/
-
     protected $listOrder = 'er_id ASC';
 
     protected $fields = array(
@@ -541,17 +532,6 @@ class e2b_eventrules_ui extends e_admin_ui
 
         $this->fields['er_botid']['writeParms'] = $this->er_botid; 
 
-/*
-
-            "forum" => array(
-                "user_forum_topic_created",
-                //"user_forum_topic_updated",
-                "user_forum_post_created", 
-            ),
-            "chatbox" => array(
-                "user_chatbox_post_created",
-            ),
-            */
         
         // Set $listQry and $events array
         switch ($this->getMode()) 
@@ -626,7 +606,45 @@ class e2b_eventrules_ui extends e_admin_ui
 
 
         // Check modes and hide 'er_sections'
+        $sectionsEnabled = array("news", "forum");
 
+        if(in_array($this->getMode(), $sectionsEnabled))
+        {
+            // Enable column display 
+            $this->$fieldpref = array_push($this->fieldpref, "er_sections");
+
+            // Set type, readParms and writeParms
+            $this->fields['er_sections']['type']        = "dropdown";
+            $this->fields['er_sections']['readParms']   = array('type' => 'checkboxes');
+            $this->fields['er_sections']['writeParms']  = array('multiple' => '1');
+
+          
+            // Fill selections with data
+            switch ($this->getMode()) {
+                case 'forum':
+                    $forums = e107::getDb()->retrieve("forum", "*", "forum_parent <> 0", true);
+
+                    foreach($forums as $forum) 
+                    {
+                        $sections[$forum['forum_id']] = $forum['forum_name'];
+                    }
+                    break;
+                case 'news':
+                    $newscats = e107::getDb()->retrieve("news_category", "*", "", true);
+                    
+                    foreach($newscats as $newscat) 
+                    {
+                        $sections[$newscat['category_id']] = $newscat['category_name'];
+                    }
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+
+            $this->fields['er_sections']['writeParms']['optArray'] =  $sections;
+
+        }
         
     }
 
