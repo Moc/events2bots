@@ -6,7 +6,7 @@ define("LAN_PLUGIN_E2B_NAME", "Events2Bots");
 define("LAN_PLUGIN_E2B_DIZ",  "This plugin allows to send messages to bots (such as Discord and Telegram) based on events in e107 such as the posting of a new news item or a new forum post."); 
 
 
-// EVENT MESSAGES
+// EVENT MESSAGES SENT BY THE BOT
 
 // User
 define("LAN_E2B_USER_SIGNUP_SUBMITTED", "A new user has signed up."); 
