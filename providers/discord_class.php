@@ -56,10 +56,15 @@ class Discord
             // Set bot language
             //$this->bot_language = $bot_data['bot_language']; // TODO ALLOW LANGUAGES OTHER THAN ENGLISH
 
-            // Set bot_avatar
+            // Check if bot avatar is set for this specific bot
             if(!empty($bot_data["bot_avatar"]))
             {
-                $this->bot_avatar = e107::getParser()->replaceConstants($bot_data["bot_avatar"], 'full'); ;
+                $this->bot_avatar = e107::getParser()->replaceConstants($bot_data["bot_avatar"], 'full'); 
+            }
+            // Use default avatar
+            else
+            {
+                $this->bot_avatar = e107::getParser()->replaceConstants(e107::getPlugPref('events2bots', 'e2b_default_avatar'), 'full'); 
             }
 
             // Set webhookurl (bot_apidata)
