@@ -54,11 +54,11 @@ class events2bots_adminArea extends e_admin_dispatcher
     protected $adminMenu = array(
 
         'main/list' => array(
-            'caption' 	=> "Manage Bots",
+            'caption' 	=> LAN_E2B_MENU_MANAGEBOTS,
             'perm' 		=> 'P'
         ),
         'main/create' => array(
-			'caption'	=> "Create a bot",
+			'caption'	=> LAN_E2B_MENU_CREATEBOT,
 			'perm'		=> 'P'
         ),
 
@@ -67,11 +67,11 @@ class events2bots_adminArea extends e_admin_dispatcher
         ),
 
         'user/list' => array(
-            'caption' 	=> "Manage User event rules",
+            'caption' 	=> LAN_E2B_MENU_ER_USER_MANAGE,
             'perm' 		=> 'P'
         ),
         'user/create' => array(
-            'caption' 	=> "Create User event rules",
+            'caption' 	=> LAN_E2B_MENU_ER_USER_CREATE,
             'perm' 		=> 'P'
         ),
 
@@ -80,11 +80,11 @@ class events2bots_adminArea extends e_admin_dispatcher
         ),
 
         'news/list' => array(
-            'caption'   => "Manage News event rules",
+            'caption'   => LAN_E2B_MENU_ER_NEWS_MANAGE,
             'perm'      => 'P'
         ),
         'news/create' => array(
-            'caption'   => "Create News event rules",
+            'caption'   => LAN_E2B_MENU_ER_NEWS_CREATE,
             'perm'      => 'P'
         ),
 
@@ -93,12 +93,12 @@ class events2bots_adminArea extends e_admin_dispatcher
         ),
 
         'forum/list' => array(
-            'caption'   => "Manage Forum event rules",
+            'caption'   => LAN_E2B_MENU_ER_FORUM_MANAGE,
             'perm'      => 'P'
         ),
 
         'forum/create' => array(
-            'caption'   => "Create Forum event rules",
+            'caption'   => LAN_E2B_MENU_ER_FORUM_CREATE,
             'perm'      => 'P'
         ),
 
@@ -107,12 +107,12 @@ class events2bots_adminArea extends e_admin_dispatcher
         ),
 
         'chatbox/list' => array(
-            'caption'   => "Manage Chatbox event rules",
+            'caption'   => LAN_E2B_MENU_ER_CHATBOX_MANAGE,
             'perm'      => 'P'
         ),
 
         'chatbox/create' => array(
-            'caption'   => "Create Chatbox event rules",
+            'caption'   => LAN_E2B_MENU_ER_CHATBOX_CREATE,
             'perm'      => 'P'
         ),
 
@@ -168,7 +168,7 @@ class e2b_bots_ui extends e_admin_ui
             'writeParms' => array(),
         ),
         'bot_avatar' => array(
-            'title' => 'Avatar',
+            'title' => LAN_E2B_BOTS_BOTAVATAR,
             'type'  => 'image',
             'data' => 'str',
             'width' => 'auto',
@@ -179,7 +179,7 @@ class e2b_bots_ui extends e_admin_ui
             'thclass' => 'left',
         ),
         'bot_name' => array(
-            'title' => LAN_NAME,
+            'title' => LAN_E2B_BOTS_BOTNAME,
             'type' => 'text',
             'data' => 'str',
             'width' => 'auto',
@@ -193,7 +193,7 @@ class e2b_bots_ui extends e_admin_ui
             'filter' => true,
         ),
         'bot_provider' => array(
-            'title' => 'Provider',
+            'title' => LAN_E2B_BOTS_PROVIDER,
             'type' => 'dropdown',
             'data' => 'int',
             'width' => 'auto',
@@ -207,7 +207,7 @@ class e2b_bots_ui extends e_admin_ui
             'batch' => false,
         ),
         'bot_language' => array(
-            'title' => 'Language',
+            'title' => ADLAN_132,
             'type' => 'dropdown',
             'data' => 'int',
             'width' => 'auto',
@@ -219,14 +219,15 @@ class e2b_bots_ui extends e_admin_ui
             'class' => 'left',
             'thclass' => 'left',
         ),
+        // TODO bot_apidata needs updating for Telegram
         'bot_apidata' => array(
-            'title' => 'Bot API data',
+            'title' => LAN_E2B_BOTS_BOTAPI,
             'type' => 'textarea',
             'data' => 'str',
             'width' => 'auto',
             'inline' => false,
             'validate' => true,
-            'help' => '',
+            'help' => LAN_E2B_BOTS_BOTAPI_HELP, 
             'readParms' => array(),
             'writeParms' => array(),
             'class' => 'left',
@@ -293,7 +294,7 @@ class e2b_bots_ui extends e_admin_ui
         // Check debug mode
         if(e107::getPlugPref('events2bots', 'e2b_debug'))
         {
-            e107::getMessage()->addWarning("Events2Bots debug mode is <strong>enabled</strong>!");
+            e107::getMessage()->addWarning("Events2Bots debug mode is <strong>enabled</strong>!"); // DO NOT TRANSLATE
         }
 
         // Supported providers
@@ -358,7 +359,8 @@ class e2b_bots_ui extends e_admin_ui
 
 		if(e107::getDb()->count('e2b_eventrules', '(*)', 'er_botid='.intval($id)))
 		{
-			e107::getMessage()->addError("Can't delete <strong>{$data['bot_name']}</strong> - it is still in use!");
+            $botdelete_error = e107::getParser()->lanVars(LAN_E2B_BOTS_DELETEERROR, $data['bot_name'], true); 
+			e107::getMessage()->addError($botdelete_error);
 			return false;
 		}
 		return true;
@@ -367,8 +369,9 @@ class e2b_bots_ui extends e_admin_ui
     // left-panel help menu area. (replaces e_help.php used in old plugins)
     public function renderHelp()
     {
-        $caption = LAN_HELP;
-        $text = 'Some help text';
+        $caption    = LAN_HELP;
+        $help_url   = "https://tijnk.gitbook.io/events2bots/";
+        $text  = str_replace(array("[", "]"), array("<a href='https://tijnk.gitbook.io/events2bots/' target='_blank'>", "</a>"), LAN_E2B_HELP);
 
         return array(
             'caption' 	=> $caption,
@@ -414,7 +417,7 @@ class e2b_eventrules_ui extends e_admin_ui
             'writeParms' => array(),
         ) ,
         'er_id' => array(
-            'title' => "ER ID",
+            'title' => LAN_ID,
             'type' => 'number',
             'data' => 'int',
             'width' => '5%',
@@ -426,7 +429,7 @@ class e2b_eventrules_ui extends e_admin_ui
             //'forced' => '1',
         ),
         'bot_avatar' => array(
-            'title' => 'Bot Avatar',
+            'title' => LAN_E2B_BOTS_BOTAVATAR,
             'type'  => 'image',
             'data' => 'str',
             'width' => 'auto',
@@ -439,7 +442,7 @@ class e2b_eventrules_ui extends e_admin_ui
             'noedit' => true, 
         ),
         'er_botid' => array(
-            'title' => "Bot",
+            'title' => LAN_E2B_BOTS_BOTNAME,
             'type' => 'dropdown',
             'data' => 'str',
             'width' => 'auto',
@@ -465,7 +468,7 @@ class e2b_eventrules_ui extends e_admin_ui
             'validate' => true,
         ),
         'er_eventname' => array(
-            'title' => 'Event name',
+            'title' => LAN_E2B_ER_EVENT,
             'type' => 'radio',
             'data' => 'str',
             'width' => 'auto',
@@ -479,11 +482,11 @@ class e2b_eventrules_ui extends e_admin_ui
             'validate' => true,
         ) ,
         'er_sections' => array(
-            'title' => 'Sections',
+            'title' => LAN_E2B_ER_SECTIONS,
             'type' => 'hidden',
             'data' => 'str',
             'width' => 'auto',
-            'help' => '',
+            'help' => LAN_E2B_ER_SECTIONS_HELP,
             'readParms' => array(),
             'writeParms' => array(),
             'class' => 'left',
@@ -538,8 +541,8 @@ class e2b_eventrules_ui extends e_admin_ui
         {
             case 'user':
                     $events = array(
-                        "user_signup_submitted" => "New user registration",
-                        "user_signup_activated" => "New user has activated their account",
+                        "user_signup_submitted" => LAN_E2B_EVENT_USER_SIGNUP_SUBMITTED,
+                        "user_signup_activated" => LAN_E2B_EVENT_USER_SIGNUP_ACTIVATED,
                     );
 
                     $this->listQry = 
@@ -552,8 +555,8 @@ class e2b_eventrules_ui extends e_admin_ui
                 break;
             case 'news':
                     $events = array(
-                        "admin_news_create" => "New news item posted",
-                        "admin_news_update" => "Existing news item updated",
+                        "admin_news_create" => LAN_E2B_EVENT_ADMIN_NEWS_CREATE,
+                        "admin_news_update" => LAN_E2B_EVENT_ADMIN_NEWS_UPDATE,
                     );
 
                     $this->listQry = 
@@ -566,8 +569,8 @@ class e2b_eventrules_ui extends e_admin_ui
                 break;
             case 'forum':
                     $events = array(
-                        "user_forum_topic_created" => "New forum topic created",
-                        "user_forum_post_created"  => "New forum post created",
+                        "user_forum_topic_created" => LAN_E2B_EVENT_USER_FORUM_TOPIC_CREATED,
+                        "user_forum_post_created"  => LAN_E2B_EVENT_USER_FORUM_POST_CREATED,
                     );
 
                     $this->listQry = 
@@ -580,7 +583,7 @@ class e2b_eventrules_ui extends e_admin_ui
                 break;
             case 'chatbox':
                     $events = array(
-                        "user_chatbox_post_created" => "New chatbox message posted",
+                        "user_chatbox_post_created" => LAN_E2B_EVENT_USER_CHATBOX_POST_CREATED,
                     );
 
                     $this->listQry = 
@@ -617,9 +620,8 @@ class e2b_eventrules_ui extends e_admin_ui
             $this->fields['er_sections']['type']        = "dropdown";
             $this->fields['er_sections']['readParms']   = array('type' => 'checkboxes');
             $this->fields['er_sections']['writeParms']  = array('multiple' => '1');
-
           
-            // Fill selections with data
+            // Fill selection checkboxes with data
             switch ($this->getMode()) {
                 case 'forum':
                     $forums = e107::getDb()->retrieve("forum", "*", "forum_parent <> 0", true);
@@ -687,14 +689,14 @@ class e2b_eventrules_ui extends e_admin_ui
     // left-panel help menu area. (replaces e_help.php used in old plugins)
     public function renderHelp()
     {
-        $caption = LAN_HELP;
-        $text = 'Some help text';
+        $caption    = LAN_HELP;
+        $help_url   = "https://tijnk.gitbook.io/events2bots/";
+        $text  = str_replace(array("[", "]"), array("<a href='https://tijnk.gitbook.io/events2bots/' target='_blank'>", "</a>"), LAN_E2B_HELP);
 
         return array(
-            'caption' 	=> $caption,
-            'text' 		=> $text
+            'caption'   => $caption,
+            'text'      => $text
         );
-
     }
 
 }
