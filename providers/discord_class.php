@@ -18,17 +18,15 @@ class Discord
     public $bot_language    = "English"; // always default to English for now 
     public $prepared_data   = array();  
 
-    public $e2b_debug = true; // TODO: add preference and set to 'false' by default
+    public $e2b_debug       = false; 
 
     public function __construct()
     {
-
-        // TODO
-        // if pref set debug to true; 
-        // if($pref)
-        // {
-        //  $this->e2b_debug = true; // TODO
-        // }
+        // Check debug mode
+        if(e107::getPlugPref('events2bots', 'e2b_debug') == true) 
+        {
+            $this->e2b_debug = true;
+        }
     }
 
     function init($event_type, $event_name, $event_rule_data, $event_data)
@@ -135,7 +133,7 @@ class Discord
 
         if($event_name == "user_signup_activated")
         {
-            $content = LAN_E2B_USER_SIGNUP_ACTIVATED;
+            $content    = LAN_E2B_USER_SIGNUP_ACTIVATED;
             $username   = $event_data["user_name"];
             $email      = $event_data["user_email"];
         }
