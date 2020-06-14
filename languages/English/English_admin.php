@@ -34,6 +34,7 @@ define("LAN_E2B_ER_EVENT", 			"Event");
 define("LAN_E2B_ER_SECTIONS", 		"Sections");
 define("LAN_E2B_ER_SECTIONS_HELP", 	"Select specific sections for this event");
 
+define("LAN_E2B_ER_NOBOTSYET", 		"No bots have been added yet! Please create a bot first before creating an event rule.");
 
 // Events
 define("LAN_E2B_EVENT_USER_SIGNUP_SUBMITTED", 		"New user registration");

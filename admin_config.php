@@ -518,9 +518,14 @@ class e2b_eventrules_ui extends e_admin_ui
     public function init()
     {
         // This code may be removed once plugin development is complete.
-        if (!e107::isInstalled('events2bots'))
+        if(!e107::isInstalled('events2bots'))
         {
             e107::getMessage()->addWarning("This plugin is not yet installed. Saving and loading of preference or table data will fail.");
+        }
+
+        if(!e107::getDb()->count("e2b_bots"))
+        {
+            e107::getMessage()->addWarning(LAN_E2B_ER_NOBOTSYET);
         }
 
         // Bots selection
