@@ -15,7 +15,7 @@
 		<link url='admin_config.php' description='Configure Events2Bots' icon='images/e2b_32.png' iconSmall='images/e2b_16.png' icon128="images/e2b_128.png" primary='true'>LAN_CONFIGURE</link>
 	</adminLinks>
 	<pluginPrefs>
-		<pref name="e2b_default_avatar">1</pref>
+		<pref name="e2b_default_avatar">{e_PLUGIN}events2bots/images/e2b_128.png</pref>
 		<pref name="e2b_default_language">English</pref>
 		<pref name="e2b_debug">0</pref>
 	</pluginPrefs>
