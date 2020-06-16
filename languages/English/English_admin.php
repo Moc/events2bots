@@ -38,7 +38,8 @@ define("LAN_E2B_ER_NOBOTSYET", 		"No bots have been added yet! Please create a b
 
 // Events
 define("LAN_E2B_EVENT_USER_SIGNUP_SUBMITTED", 		"New user registration");
-define("LAN_E2B_EVENT_USER_SIGNUP_ACTIVATED", 		"New user has activated their account");
+define("LAN_E2B_EVENT_USER_SIGNUP_ACTIVATED", 		"New user has activated their account by email");
+// TODO LAN_E2B_EVENT_USER_SIGNUP_ACTIVATED_ADMIN
 
 define("LAN_E2B_EVENT_ADMIN_NEWS_CREATE", 			"New news item posted");
 define("LAN_E2B_EVENT_ADMIN_NEWS_UPDATE", 			"Existing news item updated");

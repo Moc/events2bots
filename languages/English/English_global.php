@@ -10,7 +10,7 @@ define("LAN_PLUGIN_E2B_DIZ",  "This plugin allows to send messages to bots (such
 
 // User
 define("LAN_E2B_USER_SIGNUP_SUBMITTED", 		"A new user has signed up."); 
-define("LAN_E2B_USER_SIGNUP_ACTIVATED", 		"A new user has been activated."); 
+define("LAN_E2B_USER_SIGNUP_ACTIVATED", 		"A new user has activated their account by email."); 
 define("LAN_E2B_USER_SIGNUP_XUP",				"A new user has signed up using social social login."); 
 
 
