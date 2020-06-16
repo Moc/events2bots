@@ -36,7 +36,8 @@ class Discord
 
         if($this->e2b_debug)
         {
-            error_log("Bot id: ".$bot_id);
+            e107::getAdminLog()->addDebug("(".__LINE__.") Bot id: ".$bot_id);
+            e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
         }
 
         // Get bot data based on bot_id and set variables
@@ -44,8 +45,8 @@ class Discord
         {
             if($this->e2b_debug)
             {
-                error_log("Bot data: ".$bot_id);
-                error_log(print_r($bot_data, TRUE));
+                e107::getAdminLog()->addDebug("(".__LINE__.") Bot data: ".$bot_id);
+                e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
             }
 
             // Set bot name (bot_name)
@@ -72,8 +73,10 @@ class Discord
         {
             if($this->e2b_debug)
             {
-                error_log("No bot data?!"); // TODO ERROR HANDLING
+                e107::getAdminLog()->addDebug("(".__LINE__.") No bot data?!");
+                e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
             }
+
             return false; 
         }
 
@@ -95,7 +98,8 @@ class Discord
             default:
                 if($this->e2b_debug)
                 {
-                    error_log("Event type not coded yet! Event type: ".$event_type.". Event name: ".$event_name); // TODO error handling
+                    e107::getAdminLog()->addDebug("(".__LINE__.") Event type not coded yet! Event type: ".$event_type.". Event name: ".$event_name); 
+                    e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
                 }
                 return false;
         }
@@ -106,8 +110,10 @@ class Discord
     {
         if($this->e2b_debug)
         {
-            error_log("event data");
-            error_log(print_r($event_data, TRUE));
+            e107::getAdminLog()->addDebug("(".__LINE__.") User event data: ".$event_name);
+            e107::getAdminLog()->addDebug(print_r($event_data, TRUE));
+
+            e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
         }
 
         /*
@@ -169,8 +175,10 @@ class Discord
 
         if($this->e2b_debug)
         {
-            error_log("news section data");
-            error_log(print_r($section_data, TRUE));
+            e107::getAdminLog()->addDebug("(".__LINE__.") News section data");
+            e107::getAdminLog()->addDebug(print_r($section_data, true));
+
+            e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
         }
 
         return $section_data; 
@@ -182,11 +190,13 @@ class Discord
 
         if($this->e2b_debug)
         {
-            error_log("event data");
-            error_log(print_r($event_data, TRUE));
+            e107::getAdminLog()->addDebug("(".__LINE__.") News event data: ".$event_name);
+            e107::getAdminLog()->addDebug(print_r($event_data, true));
 
-            error_log("event rule data");
-            error_log(print_r($event_rule_data, TRUE));
+            e107::getAdminLog()->addDebug("(".__LINE__.") News event rule data");
+            e107::getAdminLog()->addDebug(print_r($event_rule_data, true));
+
+            e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
         }
 
         // Existing News item updated
@@ -206,8 +216,10 @@ class Discord
 
         if($this->e2b_debug)
         {
-            error_log("news data");
-            error_log(print_r($news_data, TRUE));
+            e107::getAdminLog()->addDebug("(".__LINE__.") News data");
+            e107::getAdminLog()->addDebug(print_r($news_data, true));
+
+            e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
         }
 
         // Check if specific news categories have been selected, if not, then it is a generic news update message. 
@@ -232,14 +244,15 @@ class Discord
                     $content = e107::getParser()->lanVars(LAN_E2B_NEWS_NEW_CATEGORY, $section_data["category_name"]);
                 }
             }
+            // News item does NOT belong to a selected section, so stop the process. No update message is going to be send.
             else
             {
                 if($this->e2b_debug)
                 {
-                    error_log("News item does NOT belong to a selected section");
+                    e107::getAdminLog()->addDebug("(".__LINE__.") News item does NOT belong to a selected section");
+                    e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
                 }   
-            
-                // News item does NOT belong to a selected section, so stop the process. No update message is going to be send.  
+                              
                 return false;   
             }
              
@@ -387,6 +400,15 @@ class Discord
     private function getForumSection($section)
     {
         $section_data = e107::getDb()->retrieve("forum", "*", "forum_id='{$section}'");
+
+        if($this->e2b_debug)
+        {
+            e107::getAdminLog()->addDebug("(".__LINE__.") Forum section data");
+            e107::getAdminLog()->addDebug(print_r($section_data, true));
+
+            e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
+        }
+
         return $section_data;
     }
 
@@ -397,8 +419,13 @@ class Discord
 
         if($this->e2b_debug)
         {
-            error_log($event_name);
-            error_log(print_r($event_data, true));
+            e107::getAdminLog()->addDebug("(".__LINE__.") Forum event data: ".$event_name);
+            e107::getAdminLog()->addDebug(print_r($event_data, true));
+
+            e107::getAdminLog()->addDebug("(".__LINE__.") Forum event rule data");
+            e107::getAdminLog()->addDebug(print_r($event_rule_data, true));
+
+            e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
         }
 
         // Check for forum topic start. 
@@ -406,9 +433,11 @@ class Discord
         {
             if($this->e2b_debug)
             {
-                error_log("Forum post appears to be new topic. Let 'user_forum_topic_created' handle this."); // TODO LOG THIS SOMEWHERE
+                e107::getAdminLog()->addDebug("(".__LINE__.") Forum post appears to be new topic. Let 'user_forum_topic_created' handle this."); 
+                e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
             }
-            return; 
+
+            return false; 
         }   
 
 
@@ -479,6 +508,16 @@ class Discord
             $forum_data = array_merge($thread_data, $forum_data);
         }
 
+        if($this->e2b_debug)
+        {
+            e107::getAdminLog()->addDebug("(".__LINE__.") Forum data");
+            e107::getAdminLog()->addDebug(print_r($forum_data, true));
+
+            e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
+        }
+
+        // TODO - CHECK FOR EMPTY POST DATA, COULD BE A DUPLICATE POST. ACTUALLY NEEDS FIXING IN CORE TO CHECK BEFORE FIRING EVENT
+
 
         // Check if specific news categories have been selected, if not, then it is a generic news update message. 
         if(!empty($event_rule_data["er_sections"]))
@@ -507,7 +546,8 @@ class Discord
             {
                 if($this->e2b_debug)
                 {
-                    error_log("Forum topic/post does NOT belong to a selected section");
+                    e107::getAdminLog()->addDebug("Forum topic/post does NOT belong to a selected section");
+                    e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
                 }   
             
                 // Forum topic/post does NOT belong to a selected section, so stop the process. No update message is going to be send.  
@@ -521,14 +561,7 @@ class Discord
             $content = ($event_name == "user_forum_post_created") ? LAN_E2B_FORUM_POST_CREATED : LAN_E2B_FORUM_TOPIC_CREATED;   
         }
 
-        if($this->e2b_debug)
-        {
-            error_log(_LINE__.": forum data");
-            error_log(print_r($forum_data, true));
-        }
-
-        // TODO - CHECK FOR EMPTY POST DATA, COULD BE A DUPLICATE POST. ACTUALLY NEEDS FIXING IN CORE TO CHECK BEFORE FIRING EVENT
-
+       
         // Set thread_sef based on thread_name
         $forum_data["thread_sef"] = eHelper::title2sef($forum_data['thread_name']);
 
@@ -596,8 +629,10 @@ class Discord
     {
         if($this->e2b_debug)
         {
-            error_log($event_name);
-            error_log(print_r($event_data, true));
+            e107::getAdminLog()->addDebug("(".__LINE__.") Chatbox event data: ".$event_name);
+            e107::getAdminLog()->addDebug(print_r($event_data, true));
+
+            e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
         }
         /*
         (
@@ -628,9 +663,8 @@ class Discord
 
         // Compile prepared data
         $prepared_data = array(
-            //"content"   => "New chatbox message has been posted!", // LAN 
+        
             "content" => LAN_E2B_CHATBOX_NEW_POST, 
-
             
             // Embeds Array
             "embeds" => [
@@ -645,7 +679,6 @@ class Discord
                     ],
                 ]
             ]
-
 
         );
 
@@ -665,8 +698,10 @@ class Discord
 
         if($this->e2b_debug)
         {
-            error_log("PRE-JSON");
-            error_log(print_r($prepared_data, TRUE));
+            e107::getAdminLog()->addDebug("(".__LINE__.") PRE-JSON");
+            e107::getAdminLog()->addDebug(print_r($prepared_data, true));
+            
+            e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
         }
         
         // JSON encode the prepared message
@@ -687,11 +722,12 @@ class Discord
         // TODO ERROR HANDLING
         if($this->e2b_debug)
         {
-            error_log("json response debug");
-            error_log($response);
+            e107::getAdminLog()->addDebug("(".__LINE__.") JSON response");
+            e107::getAdminLog()->addDebug($response);
+
+            e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
         }
 
         curl_close($ch);
     }
-
 }
