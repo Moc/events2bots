@@ -24,6 +24,7 @@ Chatbox:
 - Add custom messages in Discord, per eventrule 
 - Support events: - user_forum_topic_updated, user_xup_signup
 - Support events: Pages/menus (admin_page_create, admin_page_update, admin_page_delete)
+- Support events: admin_user_create, admin_user_update, admin_user_delete, admin_user_activate, 
 
 ## How to get help? ##
 
