@@ -211,7 +211,7 @@ class Discord
         }
 
         // Check if specific news categories have been selected, if not, then it is a generic news update message. 
-        if($event_rule_data["er_sections"] !== "0")
+        if(!empty($event_rule_data["er_sections"]))
         {
             // Specific sections are selected. 
             // Create array of sections
@@ -481,7 +481,7 @@ class Discord
 
 
         // Check if specific news categories have been selected, if not, then it is a generic news update message. 
-        if($event_rule_data["er_sections"] !== "0")
+        if(!empty($event_rule_data["er_sections"]))
         {
             // Specific sections are selected. 
             // Create array of sections
