@@ -106,6 +106,20 @@ class Discord
         }
     }
 
+    function limitChars($input, $length)
+    {
+        if(strlen($input) <= $length)
+        {
+            return $input;
+        }
+        else
+        {
+            $pos = strpos($input, ' ', $length);
+            $y = substr($input, 0, $pos) . '...';
+            return $y;
+        }
+    }
+
     // USER
     function prepareUser($event_name, $event_data)
     {
@@ -290,14 +304,32 @@ class Discord
         // News item titel url 
         $news_url = e107::getUrl()->create('news/view/item', $news_data, array('full' => 1, 'encode' => 0)); 
 
+        //error_log($news_data["news_body"]);
+
         // Set description (news_body)
         $news_body_notags  = str_replace(array('[html]','[/html]'),'', $news_data["news_body"]); // remove [html] and [/html]
+        //error_log($news_body_notags);
+
+
         $news_body_notags  = e107::getParser()->replaceConstants($news_body_notags, 'full'); // replace {e_...} constants
+        //error_log($news_body_notags);
+
         $news_body_tohtml  = e107::getParser()->toHTML($news_body_notags, true); // parse bbcodes 
+        //error_log($news_body_tohtml);
+
+        $news_body_html = strip_tags($news_body_tohtml, "<a><br><img>");
+        //error_log($news_body_html);
+
+
 
         // Convert HTML to Markdown
         $converter  = new League\HTMLToMarkdown\HtmlConverter();
-        $news_body  = $converter->convert($news_body_tohtml);
+        $news_body  = $converter->convert($news_body_html);
+        //error_log($news_body);
+
+        // Limited characters
+        $news_body = $this->limitChars($news_body, 1950);
+        //error_log($news_body);
 
         // News (first) thumbnail url
         $news_image_raw = explode(",", $news_data["news_thumbnail"]);
