@@ -308,7 +308,7 @@ class Discord
                     
                     "url"           => $news_url,
 
-                    "author"        => ["name" => $news_author],
+                    //"author"        => ["name" => $news_author],
 
                     // Image to send
                     "image" => [
@@ -610,7 +610,7 @@ class Discord
                     
                     "url"           => $forum_url,
 
-                    "author"        => ["name" => $forum_author],
+                    //"author"        => ["name" => $forum_author],
 
                     // Footer
                     "footer" => [
