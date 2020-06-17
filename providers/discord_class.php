@@ -283,6 +283,7 @@ class Discord
 
         // Set description (news_body)
         $news_body_notags  = str_replace(array('[html]','[/html]'),'', $news_data["news_body"]); // remove [html] and [/html]
+        $news_body_notags  = e107::getParser()->replaceConstants($news_body_notags, 'full'); // replace {e_...} constants
         $news_body_tohtml  = e107::getParser()->toHTML($news_body_notags, true); // parse bbcodes 
 
         // Convert HTML to Markdown
@@ -303,7 +304,7 @@ class Discord
                     "title"         => $news_data["news_title"],
                     "description"   => $news_body,
                     
-                    "type"          => "rich",
+                    //"type"          => "rich",
                     
                     "url"           => $news_url,
 
