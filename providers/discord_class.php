@@ -264,9 +264,18 @@ class Discord
             $content = ($action == "update") ? LAN_E2B_NEWS_UPDATED : LAN_E2B_NEWS_NEW;   
         }
 
-        // Author
+        // Get user data
         $userdata       = e107::user($news_data["news_author"]);
+
+        // Author
         $news_author    = $userdata["user_name"];
+
+        if($this->e2b_debug)
+        {
+            e107::getAdminLog()->addDebug("(".__LINE__.") User data");
+            e107::getAdminLog()->addDebug(print_r($userdata, true));
+            e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
+        }   
 
         // Prepare avatar
         $avatar_options = array(
@@ -578,6 +587,14 @@ class Discord
         // Set author
         $user_id        = !empty($forum_data["thread_user"]) ? $forum_data["thread_user"] : $forum_data["post_user"];
         $userdata       = e107::user($user_id);
+
+        if($this->e2b_debug)
+        {
+            e107::getAdminLog()->addDebug("(".__LINE__.") User data");
+            e107::getAdminLog()->addDebug(print_r($userdata, true));
+            e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
+        }   
+
         $forum_author   = $userdata["user_name"];
 
         // Prepare avatar
@@ -652,6 +669,13 @@ class Discord
         
         // Retrieve all userdata
         $userdata = e107::user($temp[0]);
+
+        if($this->e2b_debug)
+        {
+            e107::getAdminLog()->addDebug("(".__LINE__.") User data");
+            e107::getAdminLog()->addDebug(print_r($userdata, true));
+            e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
+        }   
 
         // Prepare avatar
         $avatar_options = array(
