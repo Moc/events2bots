@@ -45,7 +45,8 @@ class Discord
         {
             if($this->e2b_debug)
             {
-                e107::getAdminLog()->addDebug("(".__LINE__.") Bot data: ".$bot_id);
+                e107::getAdminLog()->addDebug("(".__LINE__.") Bot data");
+                e107::getAdminLog()->addDebug(print_r($bot_data, TRUE));
                 e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
             }
 
@@ -706,6 +707,14 @@ class Discord
         
         // JSON encode the prepared message
         $json_data = json_encode($prepared_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        if($this->e2b_debug)
+        {
+            e107::getAdminLog()->addDebug("(".__LINE__.") POST-JSON");
+            e107::getAdminLog()->addDebug(print_r($json_data, true));
+            
+            e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
+        }
 
         // Set cURL options
         $ch = curl_init($this->webhookurl);
