@@ -279,10 +279,10 @@ class Discord
         }
 
         // Get user data
-        $userdata       = e107::user($news_data["news_author"]);
+        $userdata = e107::user($news_data["news_author"]);
 
         // Author
-        $news_author    = $userdata["user_name"];
+        $news_author = $userdata["user_name"];
 
         if($this->e2b_debug)
         {
@@ -310,7 +310,6 @@ class Discord
         $news_body_notags  = str_replace(array('[html]','[/html]'),'', $news_data["news_body"]); // remove [html] and [/html]
         //error_log($news_body_notags);
 
-
         $news_body_notags  = e107::getParser()->replaceConstants($news_body_notags, 'full'); // replace {e_...} constants
         //error_log($news_body_notags);
 
@@ -319,8 +318,6 @@ class Discord
 
         $news_body_html = strip_tags($news_body_tohtml, "<a><br><img>");
         //error_log($news_body_html);
-
-
 
         // Convert HTML to Markdown
         $converter  = new League\HTMLToMarkdown\HtmlConverter();
@@ -559,8 +556,18 @@ class Discord
             e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
         }
 
-        // TODO - CHECK FOR EMPTY POST DATA, COULD BE A DUPLICATE POST. ACTUALLY NEEDS FIXING IN CORE TO CHECK BEFORE FIRING EVENT
+        // Check for empty forum data. This is likely caused when a 'duplicate post' is created. 
+        // Actually is a bug in core that needs fixing (#4201)
+        if(empty($forum_data))
+        {
+            if($this->e2b_debug)
+            {
+                e107::getAdminLog()->addDebug("(".__LINE__.") No forum data! Probably duplicate post!");
+                e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
+            }
 
+            return false; 
+        }
 
         // Check if specific news categories have been selected, if not, then it is a generic news update message. 
         if(!empty($event_rule_data["er_sections"]))
@@ -609,12 +616,16 @@ class Discord
         $forum_data["thread_sef"] = eHelper::title2sef($forum_data['thread_name']);
 
         // Set description (post_entry)
-        $post_entry_notags  = str_replace(array('[html]','[/html]'),'', $forum_data["post_entry"]); // remove [html] and [/html]
-        $post_entry_tohtml  = e107::getParser()->toHTML($post_entry_notags, true); // parse bbcodes 
+        $post_entry_notags = str_replace(array('[html]','[/html]'),'', $forum_data["post_entry"]); // remove [html] and [/html]
+        $post_entry_tohtml = e107::getParser()->toHTML($post_entry_notags, true); // parse bbcodes 
+        $post_entry_tohtml = strip_tags($post_entry_tohtml, "<a><br><img>"); // remove unwanted tags
 
         // Convert HTML to Markdown
         $converter          = new League\HTMLToMarkdown\HtmlConverter();
         $forum_post_entry   = $converter->convert($post_entry_tohtml);
+
+        // Limit characters
+        $forum_post_entry = $this->limitChars($forum_post_entry, 1950);
 
         // Set author
         $user_id        = !empty($forum_data["thread_user"]) ? $forum_data["thread_user"] : $forum_data["post_user"];
@@ -655,7 +666,7 @@ class Discord
                     "title"         => $forum_data["thread_name"],
                     "description"   => $forum_post_entry,
                     
-                    "type"          => "rich",
+                    //"type"          => "rich",
                     
                     "url"           => $forum_url,
 
