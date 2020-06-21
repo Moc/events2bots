@@ -22,10 +22,24 @@ Chatbox:
 
 ### Planned features in future versions:
 - Add support for Telegram (post messages to group)
-- Add custom messages, per eventrule 
-- Support events: - user_forum_topic_updated, user_xup_signup
-- Support events: Pages/menus (admin_page_create, admin_page_update, admin_page_delete)
-- Support events: admin_user_create, admin_user_update, admin_user_delete, admin_user_activate, 
+- Allow custom messages, per eventrule 
+- Add support for these events: 
+Forum:
+- user_forum_topic_created_probationary
+- user_forum_topic_updated, 
+
+User:
+- user_xup_signup
+- admin_user_create 
+- admin_user_update
+- admin_user_delete
+- admin_user_activate
+
+Pages/menus:
+- admin_page_create 
+- admin_page_update
+- admin_page_delete
+
 
 ## How to get help? ##
 
