@@ -23,10 +23,12 @@ Chatbox:
 ### Planned features in future versions:
 - Add support for Telegram (post messages to group)
 - Allow custom messages, per eventrule 
-- Add support for these events: 
+
+*Add support for these events:*
+
 Forum:
 - user_forum_topic_created_probationary
-- user_forum_topic_updated, 
+- user_forum_topic_updated
 
 User:
 - user_xup_signup
