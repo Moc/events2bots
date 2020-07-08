@@ -325,7 +325,8 @@ class Discord
         //error_log($news_body);
 
         // Limited characters
-        $news_body = $this->limitChars($news_body, 1950);
+        $news_body  = $this->limitChars($news_body, 1950);
+        $news_title = $this->limitChars($news_data["news_title"], 235);
         //error_log($news_body);
 
         // News (first) thumbnail url
@@ -339,7 +340,7 @@ class Discord
             // Embeds Array
             "embeds" => [
                 [
-                    "title"         => $news_data["news_title"],
+                    "title"         => $news_title,
                     "description"   => $news_body,
                     
                     //"type"          => "rich",
@@ -626,6 +627,7 @@ class Discord
 
         // Limit characters
         $forum_post_entry = $this->limitChars($forum_post_entry, 1950);
+        $forum_topic_name = $this->limitChars($forum_data["thread_name"], 235);
 
         // Set author
         $user_id        = !empty($forum_data["thread_user"]) ? $forum_data["thread_user"] : $forum_data["post_user"];
@@ -663,7 +665,7 @@ class Discord
             // Embeds Array
             "embeds" => [
                 [
-                    "title"         => $forum_data["thread_name"],
+                    "title"         => $forum_topic_name,
                     "description"   => $forum_post_entry,
                     
                     //"type"          => "rich",
