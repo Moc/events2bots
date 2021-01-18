@@ -560,8 +560,8 @@ class e2b_eventrules_ui extends e_admin_ui
                 break;
             case 'news':
                     $events = array(
-                        "admin_news_create" => LAN_E2B_EVENT_ADMIN_NEWS_CREATE,
-                        "admin_news_update" => LAN_E2B_EVENT_ADMIN_NEWS_UPDATE,
+                        "admin_news_created" => LAN_E2B_EVENT_ADMIN_NEWS_CREATE,
+                        "admin_news_updated" => LAN_E2B_EVENT_ADMIN_NEWS_UPDATE,
                     );
 
                     $this->listQry = 
@@ -569,7 +569,7 @@ class e2b_eventrules_ui extends e_admin_ui
                         FROM `#e2b_eventrules` as er
                         LEFT JOIN `#e2b_bots` as b
                         ON er.er_botid = b.bot_id
-                        WHERE (er.er_eventname = 'admin_news_create' OR er.er_eventname = 'admin_news_update')
+                        WHERE (er.er_eventname = 'admin_news_created' OR er.er_eventname = 'admin_news_updated')
                         ";
                 break;
             case 'forum':
