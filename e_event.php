@@ -39,12 +39,12 @@ class events2bots_event
 
 		// News
 		$event[] = array(
-			'name'		=> "admin_news_create", 
+			'name'		=> "admin_news_created", 
 			'function'	=> "init_e2b",
 		);
 
 		$event[] = array(
-			'name'		=> "admin_news_update", 
+			'name'		=> "admin_news_updated", 
 			'function'	=> "init_e2b",
 		);
 

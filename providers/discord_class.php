@@ -215,18 +215,18 @@ class Discord
         }
 
         // Existing News item updated
-        if($event_name == "admin_news_update")
+        if($event_name == "admin_news_updated")
         {
             $news_data              = array_merge($event_data["oldData"], $event_data["newData"]);
             $news_data["news_id"]   = $event_data["oldData"]["news_id"]; // make sure 'news_id' is included in the 'new' news data
 
-            $action = "update"; 
+            $action = "updated"; 
         }
         // New news item created
         else
         {
             $news_data = $event_data["newData"];
-            $action = "create";
+            $action = "created";
         }
 
         if($this->e2b_debug)
@@ -250,7 +250,7 @@ class Discord
                 $section_data = $this->getNewsSection($news_data["news_category"]);
 
                 // Set content
-                if($action == "update")
+                if($action == "updated")
                 {
                     $content = e107::getParser()->lanVars(LAN_E2B_NEWS_UPDATED_CATEGORY, $section_data["category_name"]);
                 }
@@ -275,7 +275,7 @@ class Discord
         // No specific section is selected, so display generic message
         else
         {
-            $content = ($action == "update") ? LAN_E2B_NEWS_UPDATED : LAN_E2B_NEWS_NEW;   
+            $content = ($action == "updated") ? LAN_E2B_NEWS_UPDATED : LAN_E2B_NEWS_NEW;   
         }
 
         // Get user data

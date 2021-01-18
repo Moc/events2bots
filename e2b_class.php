@@ -25,8 +25,8 @@ class events2bots
 				//"user_xup_signup",
 			),
 			"news" => array(
-				"admin_news_create", 
-				"admin_news_update", 
+				"admin_news_created",
+				"admin_news_updated",
 			),
 			"forum" => array(
 				"user_forum_topic_created",
