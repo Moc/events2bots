@@ -53,8 +53,8 @@ class events2bots
 		{
 			if($this->e2b_debug)
 			{
-				e107::getAdminLog()->addDebug("(".__LINE__.") Event not found: ".$event_name);
-				e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
+				e107::getLog()->addDebug("(".__LINE__.") Event not found: ".$event_name);
+				e107::getLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
 			}
 			
 			return; 	
@@ -67,8 +67,8 @@ class events2bots
 		{
 			if($this->e2b_debug)
 			{
-				e107::getAdminLog()->addDebug("(".__LINE__.") Unknown event type: ".$event_name); // TODO ERROR HANDLING
-				e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
+				e107::getLog()->addDebug("(".__LINE__.") Unknown event type: ".$event_name); // TODO ERROR HANDLING
+				e107::getLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
 			}
 			
 			return false; 
@@ -77,8 +77,8 @@ class events2bots
 		// Retrieve event rules
 		if($this->e2b_debug)
 		{
-			e107::getAdminLog()->addDebug("(".__LINE__.") Retrieving eventrules data from database");
-			e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
+			e107::getLog()->addDebug("(".__LINE__.") Retrieving eventrules data from database");
+			e107::getLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
 		}
 		
 		if($allRows = e107::getDb()->retrieve("e2b_eventrules", "er_id, er_name, er_botid, er_eventname, er_sections", "er_eventname='{$event_name}'", true))
@@ -104,10 +104,10 @@ class events2bots
 				
 				if($this->e2b_debug)
 				{ 
-					e107::getAdminLog()->addDebug("(".__LINE__.") Provider is: ".$provider);
-					e107::getAdminLog()->addDebug("(".__LINE__.") Ready to launch!");
+					e107::getLog()->addDebug("(".__LINE__.") Provider is: ".$provider);
+					e107::getLog()->addDebug("(".__LINE__.") Ready to launch!");
 					
-					e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
+					e107::getLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
 				}
 
 				// Launch Event with specified provider
@@ -118,8 +118,8 @@ class events2bots
 		{
 			if($this->e2b_debug)
 			{
-				e107::getAdminLog()->addDebug("(".__LINE__.") No eventrules data?!"); 
-				e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
+				e107::getLog()->addDebug("(".__LINE__.") No eventrules data?!"); 
+				e107::getLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
 			}	
 
 			return false;
@@ -133,8 +133,8 @@ class events2bots
 		
 		if($this->e2b_debug)
 		{
-			e107::getAdminLog()->addDebug("(".__LINE__.") Event count: ".$count);
-			e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
+			e107::getLog()->addDebug("(".__LINE__.") Event count: ".$count);
+			e107::getLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
 		}
 		
 		return $count;
@@ -147,8 +147,8 @@ class events2bots
 			case 'Discord':
 				if($this->e2b_debug)
 				{
-					e107::getAdminLog()->addDebug("(".__LINE__.") Init Discord");
-					e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
+					e107::getLog()->addDebug("(".__LINE__.") Init Discord");
+					e107::getLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
 				}
 				$discord = new Discord(); 
 				$discord->init($event_type, $event_name, $event_rule_data, $event_data);
@@ -156,15 +156,15 @@ class events2bots
 			case "Telegram":
 				if($this->e2b_debug)
 				{
-					e107::getAdminLog()->addDebug("(".__LINE__.") Telegram is not supported yet!");
-					e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
+					e107::getLog()->addDebug("(".__LINE__.") Telegram is not supported yet!");
+					e107::getLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
 				}
 				break;
 			default:
 				if($this->e2b_debug)
 				{
-					e107::getAdminLog()->addDebug("(".__LINE__.") Provider unknown? Provider is: ".$provider);
-					e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true); 
+					e107::getLog()->addDebug("(".__LINE__.") Provider unknown? Provider is: ".$provider);
+					e107::getLog()->toFile('events2bots', 'Events2Bots Debug Information', true); 
 				}		
 		} 
 
@@ -195,8 +195,8 @@ class events2bots
 			default:
 				if($this->e2b_debug)
 				{
-					e107::getAdminLog()->addDebug("(".__LINE__.") Error: Provider is not found. Provider ID is: ".$provider_id);
-					e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
+					e107::getLog()->addDebug("(".__LINE__.") Error: Provider is not found. Provider ID is: ".$provider_id);
+					e107::getLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
 				}
 				$provider = "DEFAULT"; 
 		}
@@ -212,8 +212,8 @@ class events2bots
 		    {
 		    	if($this->e2b_debug)
 		    	{
-		    		e107::getAdminLog()->addDebug("(".__LINE__.") Event type is: ".$k);
-		    		e107::getAdminLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
+		    		e107::getLog()->addDebug("(".__LINE__.") Event type is: ".$k);
+		    		e107::getLog()->toFile('events2bots', 'Events2Bots Debug Information', true);
 		    	}
 		    	
 		        return $k;
