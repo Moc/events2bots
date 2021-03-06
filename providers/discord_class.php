@@ -166,7 +166,7 @@ class Discord
             "embeds" => [
                 [
                     "title"         => $event_data["username"],
-                    "description"   => $event_data["email"],
+                    //"description"   => $event_data["email"],
                     
                     //"type"          => "rich",
 
