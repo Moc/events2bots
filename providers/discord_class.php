@@ -132,6 +132,7 @@ class Discord
         }
 
         /*
+        // user_signup_submitted
         (
             [e-token] => 507b1d36076fc3d3bdea4a4f0d898a29
             [loginname] => TestUsernameAgain
@@ -142,20 +143,80 @@ class Discord
             [email_confirm] => again@again.com
             [username] => TestUsernameAgain
         )
+        // user_signup_submitted
+        (
+            [e-token] => 4697c9a81990ebd16bbb5fcea0de1bc9
+            [loginname] => Moc
+            [realname] => Tijn
+            [email] => moc@e107.org
+            [email2] => 
+            [email_confirm] => moc@e107.org
+            [hideemail] => 1
+            [signature] => Test Signature
+            [image] => 
+            [rand_num] => 1615042207073855500
+            [code_verify] => VH8pN
+            [register] => Register
+        )
+
+        // user_signup_submitted
+        (
+            [e-token] => 9daf732becbf518b4e9692418f603a1b
+            [loginname] => NewSSSSIGNUP
+            [email] => ses@sefesfe.com
+            [email2] => 
+            [register] => Register
+            [hideemail] => 1
+            [email_confirm] => ses@sefesfe.com
+            [username] => NewSSSSIGNUP
+        )
+
+        // user_signup_activated
+        (
+            [user_id] => 24
+            [user_name] => NewSSSSIGNUP
+            [user_loginname] => NewSSSSIGNUP
+            [user_customtitle] => 
+            [user_password] => $2y$10$drN3oaSmEk7YlRAr2v/fkOwPPM3pbPBYuOrP3kVsAk/RBH0Rop3va
+            [user_sess] => 74921902c6a62da09a4934504e249989
+            [user_email] => ses@sefesfe.com
+            [user_signature] => 
+            [user_image] => 
+            [user_hideemail] => 1
+            [user_join] => 1615042871
+            [user_lastvisit] => 0
+            [user_currentvisit] => 0
+            [user_lastpost] => 0
+            [user_chats] => 0
+            [user_comments] => 0
+            [user_ip] => 0000:0000:0000:0000:0000:ffff:7f00:0001
+            [user_ban] => 2
+            [user_prefs] => 
+            [user_visits] => 0
+            [user_admin] => 0
+            [user_login] => 
+            [user_class] => 
+            [user_perms] => 
+            [user_realm] => 
+            [user_pwchange] => 0
+            [user_xup] => 
+        )
+
+
         */
 
         // user_signup_submitted
         if($event_name == "user_signup_submitted")
         {
             $content    = LAN_E2B_USER_SIGNUP_SUBMITTED;
-            $username   = $event_data["username"];
+            $username   = $event_data["loginname"];
             $email      = $event_data["email"];
         }
 
         if($event_name == "user_signup_activated")
         {
             $content    = LAN_E2B_USER_SIGNUP_ACTIVATED;
-            $username   = $event_data["user_name"];
+            $username   = $event_data["user_loginname"];
             $email      = $event_data["user_email"];
         }
 
@@ -165,8 +226,8 @@ class Discord
             // Embeds Array
             "embeds" => [
                 [
-                    "title"         => $event_data["username"],
-                    //"description"   => $event_data["email"],
+                    "title"         => $username,
+                    //"description"   => $email,
                     
                     //"type"          => "rich",
 
