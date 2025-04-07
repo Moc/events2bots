@@ -573,6 +573,11 @@ class e2b_eventrules_ui extends e_admin_ui
                         ";
                 break;
             case 'forum':
+                    if(!e107::isInstalled('forum'))
+                    {
+                        e107::getMessage()->addError("Forum plugin not installed!");
+                    }
+
                     $events = array(
                         "user_forum_topic_created" => LAN_E2B_EVENT_USER_FORUM_TOPIC_CREATED,
                         "user_forum_post_created"  => LAN_E2B_EVENT_USER_FORUM_POST_CREATED,
@@ -587,6 +592,11 @@ class e2b_eventrules_ui extends e_admin_ui
                         ";
                 break;
             case 'chatbox':
+                    if(!e107::isInstalled('chatbox_menu'))
+                    {
+                        e107::getMessage()->addError("Chatbox plugin not installed!");
+                    }
+
                     $events = array(
                         "user_chatbox_post_created" => LAN_E2B_EVENT_USER_CHATBOX_POST_CREATED,
                     );
